@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="container mt-3">
+    <div class="row mt-5">
+        <div class="col-10 col-md-6 offset-1 offset-md-3 mb-3">
+            <form action="{{ request.path }}" method="post" class="card mb-3">
+                {{ form.csrf_token() }}
+                <div class="card-body text-center pt-5">
+                    <img src="../static/pict 1.png" class="mb-3" width="95" alt="">
+                    <h2 class="h5 card-title mt-2 mb-2">{{ teacher_name }}</h2>
+                    <p class="my-1">Запись на пробный урок</p>
+                    <p class="my-1">{{ dayname }}, {{ time }}</p>
+                </div>
+                <hr/>
+                <div class="card-body mx-3">
+                    {{ form.client_name.label(class_="mb-1 mt-2") }}
+                    {{ form.client_name(class_="form-control", placeholder="Введите свое имя") }}
+                    {% for err in form.client_name.errors %}
+                    <br>
+                    <div class="alert alert-danger" role="alert">{{ err }}</div>
+                    {% endfor %}
+                    {{ form.client_phone.label(class_="mb-1 mt-2") }}
+                    {{ form.client_phone(class_="form-control", placeholder="Введите свой номер", type_="tel") }}
+                    {% for err in form.client_phone.errors %}
+                    <br>
+                    <div class="alert alert-danger" role="alert">{{ err }}</div>
+                    {% endfor %}
+                    <input type="submit" class="btn btn-primary btn-block mt-4" value="Записаться на пробный урок">
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}
