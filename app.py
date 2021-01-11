@@ -179,12 +179,12 @@ def all_teachers():
 
 @app.route("/goals/<goal>/")
 def goals_page(goal):
-    teachers = db.session.query(Teacher).order_by(Teacher.rating.desc()).all()
+    teachers = Teacher.query.filter(Teacher.goals.any(Goal.alias == goal)).order_by(Teacher.rating.desc()).all()
     teachers_goal = list()
     for teacher in teachers:
         if goal in teacher.goals:
             teachers_goal.append(teacher)
-    return render_template("goal.html", goals=goals, goal=goal, teachers=teachers_goal)
+    return render_template("goal.html", goals=goals, goal=goal, teachers=teachers)
 
 
 @app.route("/request/", methods=["GET", "POST"])
@@ -204,10 +204,10 @@ def request_view():
 @app.route("/profile/<int:teacher_id>/")
 def profile_teacher(teacher_id):
     teachers = db.session.query(Teacher).order_by(Teacher.rating.desc()).all()
-    free = json.loads(teachers.free)
     for teacher_name in teachers:
         if teacher_name.id == teacher_id:
             teacher = teacher_name
+            free = json.loads(teacher.free)
     return render_template("profile.html", days=days, goals=goals, teacher=teacher, free=free)
 
 
